@@ -1,0 +1,226 @@
+@use "sass:meta";
+@use "sass:map";
+@import "../../node_modules/bootstrap/dist/css/bootstrap-grid.min.css";
+@import "./ingredients.scss";
+
+/* ########### */
+/* Variables   */
+/* ########### */
+
+$margin: 15px;
+$padding: 15px;
+
+/* ########### */
+/* Variables   */
+/* ########### */
+
+// mixin for changing banner styles based on category
+@mixin card-banner-category-colors($args...) {
+  @each $name, $colors in meta.keywords($args) {
+    .card-banner_category_#{$name} {
+      background-color: map.get($colors, "background");
+      color: map.get($colors, "text");
+    }
+  }
+}
+
+// mixin for changing body__title styles based on category
+@mixin card-body-title-category-color($args...) {
+  @each $name, $color in meta.keywords($args) {
+    .card-body__title_category_#{$name} {
+      color: $color;
+    }
+  }
+}
+
+// mixin for changing body__button styles based on category
+@mixin card-body-button-category-colors($args...) {
+  @each $name, $colors in meta.keywords($args) {
+    .card-body__button_category_#{$name} {
+      background-color: map.get($colors, "background");
+      color: map.get($colors, "text");
+    }
+
+    .card-body__button_category_#{$name}:hover {
+      background-color: map.get($colors, "background-hover");
+      color: map.get($colors, "text-hover");
+    }
+  }
+}
+
+/* ########### */
+/* Root styles */
+/* ########### */
+
+:root {
+  font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+}
+
+/* ########### */
+/* Featured card styles */
+/* ########### */
+
+.hero__card-column_featured_true {
+
+  .card {
+    background-color: $elm;
+    color: $white;
+  }
+
+  .card-body__button {
+    background-color: $chrome;
+    color: $black;
+  }
+
+  .card-body__button:hover {
+    background-color: $picton-blue;
+  }
+
+  // special case to allow elm title text to be readable when card is featured
+  .card-body__title_category_monument {
+    color: white;
+  }
+
+}
+
+/* ########### */
+/* Hero layout styles */
+/* ########### */
+
+.hero__card-row {
+  margin-bottom: $margin * 2;
+  margin-top: $margin * 2;
+}
+
+.hero__card-column {
+  display: flex;
+}
+
+/* ########### */
+/* Card styles */
+/* ########### */
+
+.card {
+  display: flex;
+  flex-direction: column;
+  margin: $margin;
+  border: 1px solid $dune;
+  color: $black;
+}
+
+.card:hover {
+  cursor: pointer;
+}
+
+.card img {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+}
+
+.card-banner__text {
+  font-size: 18px;
+  font-weight: 700;
+  padding: $padding;
+}
+
+@include card-banner-category-colors(
+  $natural: ("background": $asparagus, "text": $black),
+  $historical: ("background": $carrot, "text": $black),
+  $monument: ("background": $elm, "text": $white)
+);
+
+.card-body {
+  display: flex;
+  flex-direction: column;
+  padding: 0 $padding;
+  height: 100%;
+}
+
+.card-body__title {
+  font-size: 24px;
+  font-weight: 700;
+  margin: $margin 0;
+}
+
+@include card-body-title-category-color(
+  $natural: $asparagus,
+  $historical: $carrot,
+  $monument: $elm
+);
+
+.card-body__text {
+  padding-bottom: $padding * 2;
+  flex-grow: 1;
+}
+
+.card-body__button {
+  font-weight: 700;
+  margin: $margin 0;
+  padding: 8px $padding;
+  align-self: flex-start;
+}
+
+.card-body__button:hover {
+  cursor: pointer;
+}
+
+// the use of this mixin replaces the below commented-out code
+@include card-body-button-category-colors(
+  $natural: ("background": $asparagus, "text": $black, "background-hover": $elm, "text-hover": $white),
+  $historical: ("background": $carrot, "text": $black, "background-hover": $geraldine, "text-hover": $black),
+  $monument: ("background": $elm, "text": $white, "background-hover": $asparagus, "text-hover": $black),
+);
+
+// .card-body__button_category_natural {
+//   background-color: $asparagus;
+// }
+
+// .card-body__button_category_natural:hover {
+//   background-color: $elm;
+//   color: $white;
+// }
+
+// .card-body__button_category_historical {
+//   background-color: $carrot;
+// }
+
+// .card-body__button_category_historical:hover {
+//   background-color: $geraldine;
+// }
+
+// .card-body__button_category_monument {
+//   background-color: $elm;
+//   color: $white;
+// }
+
+// .card-body__button_category_monument:hover {
+//   background-color: $asparagus;
+//   color: $black;
+// }
+
+/* ########### */
+/* Desktop specific styles */
+/* ########### */
+
+@media (min-width: 992px) { 
+  .card-banner__text {
+    font-size: 24px;
+  }
+
+  .card-body__title {
+    font-size: 36px;
+  }
+
+  // Add hover scale effect on desktop
+  .card {
+    transition: transform .5s ease-in-out;
+  }
+  
+  .card:hover {
+    transform: scale(105%);
+  }
+}
+
